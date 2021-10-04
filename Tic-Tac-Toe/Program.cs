@@ -24,12 +24,11 @@ namespace Tic_Tac_Toe
             }
             Console.ReadKey();
             Console.Clear();
-            void Twodmath(int[,] array)
+            void MathArray(int [,]array)
             {
                 for (int i = 0; i < array.GetLength(0); i++)
                 {
                     int sum = 0;
-                    Console.WriteLine();
                     for (int j = 0; j < array.GetLength(1); j++)
                     {
                         sum += array[i, j];                        
@@ -37,7 +36,7 @@ namespace Tic_Tac_Toe
                     Console.WriteLine(sum);
                 }
             }
-            Twodmath(array2DInitExample);
+            MathArray(array2DInitExample);
         }
     }
 }
