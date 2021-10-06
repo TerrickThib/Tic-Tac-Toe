@@ -10,7 +10,7 @@ namespace Tic_Tac_Toe
         private char _player2Token;
         private char _currentToken;
         private char[,] _board;
-
+        
         /// <summary>
         /// Initializes player tokens and the game board
         /// </summary>
@@ -31,13 +31,18 @@ namespace Tic_Tac_Toe
         /// </summary>
         public void Update()
         {
+            //Check both tokens/ players to see if they reached win condition
+            CheckWinner(_player1Token);
+            CheckWinner(_player2Token);
+
             Console.WriteLine("Current Token turn: " + _currentToken);
-            CheckWinner(_currentToken);
-            SetToken(_currentToken, 1,1);                                    
+            SetToken(_currentToken, 1, 1);
+            
             if (_currentToken == _player1Token)
                 _currentToken = _player2Token;
             else
                 _currentToken = _player1Token;
+                                    
         }
 
         /// <summary>
@@ -54,7 +59,8 @@ namespace Tic_Tac_Toe
 
         public void End()
         {
-
+            Console.WriteLine("Thanks for Playing");
+            
         }
 
         /// <summary>
@@ -65,9 +71,10 @@ namespace Tic_Tac_Toe
         /// <param name="posY">The y position of the token.</param>
         /// <returns>Return false if the indices are out of range.</returns>
         public bool SetToken(char token, int posX, int posY)
-        {
+        {            
             int place = (Game.GetInput());
-            if (place >= -1 || place <= 8)
+            //Places the token as long as its destination is between 0 or 8
+            if (place >= 0 && place <= 8)
             {
                 //Sets the position of the token.
                 posX = place / 3;
@@ -76,16 +83,15 @@ namespace Tic_Tac_Toe
                 //Places it on the board based on that place
                 _board[posX, posY] = token;
                 return true;
-            }
-            if (place >= 9 || place <= -2)
+            }            
+            //If the move is invalit
+            else
             {
-                posX = place / 3;
-                posY = place % 3;
-
-                Console.WriteLine("Invalid Answer");
-                _board[posX, posY] = token;
-                return false;
+                Console.WriteLine("Invalid Response");
+                Console.WriteLine("Current Token turn: " + _currentToken);
+                SetToken(_currentToken, 1, 1);                
             }
+           
             return true;
         }
         
@@ -98,30 +104,35 @@ namespace Tic_Tac_Toe
         {
             for (int i = 0; i < _board.GetLength(0); i++)
             {
-                //IF you win horizontal
+                //IF you win condition is met horizontal
                 if (_board[i,0] == token && _board[i,1] == token && _board[i,2] == token)
                 {
                     Console.WriteLine("You Win-" + token);
+                    ClearBoard();
                     return true;
                 }
+                //Checks if win condition is met vertically
                 else if (_board[0,i] == token && _board[1,i] == token && _board[2,i] == token)
                 {
                     Console.WriteLine("You Win-" + token);
+                    ClearBoard();
                     return true;
                 }
             }
+            //Checks if win condition is met Diagnal
             if (_board[0,0] == token && _board[1,1] == token && _board[2,2] == token)
             {
                 Console.WriteLine("You Win-" + token);
+                ClearBoard();
                 return true;
             }
             else if(_board[0,2] == token && _board[1,1] == token && _board[2,0] == token)
             {
                 Console.WriteLine("You Win-" + token);
-                return true;
+                ClearBoard();
+                return true;                
             }
-                
-           
+                           
             return false;
         }
 
@@ -130,7 +141,21 @@ namespace Tic_Tac_Toe
         /// </summary>
         public void ClearBoard()
         {
-
+            Console.WriteLine("Would You like to play Again?" + "\n1.Yes" + "\n2.No");
+            int input = (Game.GetInput());
+            if (input == 0)
+            {
+                Console.Clear();
+                _player1Token = 'x';
+                _player2Token = 'o';
+                _currentToken = _player1Token;
+                _board = new char[3, 3] { { '1', '2', '3' }, { '4', '5', '6' }, { '7', '8', '9' } };
+            }
+            else if (input == 1)
+            {
+                End();
+            }
+            
         }
     }
 }
