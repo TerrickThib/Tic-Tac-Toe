@@ -36,13 +36,15 @@ namespace Tic_Tac_Toe
             CheckWinner(_player2Token);
 
             Console.WriteLine("Current Token turn: " + _currentToken);
-            SetToken(_currentToken, 1, 1);
             
-            if (_currentToken == _player1Token)
-                _currentToken = _player2Token;
-            else
-                _currentToken = _player1Token;
-                                    
+            if (SetToken(_currentToken, 1, 1))
+            {
+
+                if (_currentToken == _player1Token)
+                    _currentToken = _player2Token;
+                else
+                    _currentToken = _player1Token;
+            }                       
         }
 
         /// <summary>
@@ -79,10 +81,13 @@ namespace Tic_Tac_Toe
                 //Sets the position of the token.
                 posX = place / 3;
                 posY = place % 3;
-
-                //Places it on the board based on that place
-                _board[posX, posY] = token;
-                return true;
+                if (_board[posX,posY] != 'x' && _board[posX,posY] != 'o')
+                {
+                    //Places it on the board based on that place
+                    _board[posX, posY] = token;
+                    return true;
+                }
+                return false;                 
             }            
             //If the move is invalit
             else
